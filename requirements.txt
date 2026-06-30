@@ -1,0 +1,14 @@
+# OSINT SaaS Platform - Dependencies
+# =====================================
+
+# Environment variables management
+python-dotenv>=1.0.0
+
+# Logging enhancements
+# (logging is part of standard library)
+
+# Type hints
+# (typing is part of standard library for Python 3.5+)
+
+# Note: Additional dependencies may be required based on the 
+# agent.modules implementation (reporter, dorker, etc.)

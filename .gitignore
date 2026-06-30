@@ -1,1 +1,1 @@
-Nothing should be ignored in this case, as the changes only include source/config files (.md and .sh) without any build artifacts, dependencies, or temporary files.
+Nothing should be ignored in this case, as only a markdown documentation file (.md) was added without any build artifacts, dependencies, or temporary files.

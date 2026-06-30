@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Platform - Talent Workspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+            color: #2d3748;
+        }
+
+        /* Layout Principal */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 24px 32px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+        }
+
+        .logo h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #4a5568;
+        }
+
+        .logo span {
+            color: #4299e1;
+        }
+
+        .workspace-badge {
+            display: inline-block;
+            background: #ebf8ff;
+            color: #4299e1;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 16px;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            color: #718096;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #ebf8ff;
+            color: #4299e1;
+        }
+
+        .nav-link i {
+            width: 24px;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .header-left h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .header-left p {
+            color: #718096;
+            font-size: 14px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 16px 10px 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            width: 300px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: #4299e1;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #3182ce;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #4299e1;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Metrics Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .metric-label {
+            color: #718096;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .metric-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .metric-icon.blue { background: #ebf8ff; color: #4299e1; }
+        .metric-icon.green { background: #f0fff4; color: #48bb78; }
+        .metric-icon.purple { background: #faf5ff; color: #9f7aea; }
+        .metric-icon.orange { background: #fffaf0; color: #ed8936; }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .metric-change {
+            font-size: 13px;
+            color: #48bb78;
+            font-weight: 600;
+        }
+
+        .metric-change.negative {
+            color: #f56565;
+        }
+
+        /* Content Sections */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #4299e1;
+            border: 1px solid #4299e1;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #ebf8ff;
+        }
+
+        /* Talent Profiles List */
+        .profile-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .profile-card:hover {
+            border-color: #4299e1;
+            box-shadow: 0 2px 8px rgba(66,153,225,0.1);
+        }
+
+        .profile-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            margin-right: 16px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-weight: 600;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+
+        .profile-role {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 4px;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 13px;
+            color: #a0aec0;
+        }
+
+        .profile-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profile-score {
+            text-align: center;
+            padding: 0 16px;
+        }
+
+        .score-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #48bb78;
+        }
+
+        .score-label {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: #ebf8ff;
+            border-color: #4299e1;
+            color: #4299e1;
+        }
+
+        /* Recent Activity */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #ebf8ff;
+            color: #4299e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            font-size: 14px;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .activity-text strong {
+            color: #1a202c;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .tag-blue { background: #ebf8ff; color: #4299e1; }
+        .tag-green { background: #f0fff4; color: #48bb78; }
+        .tag-purple { background: #faf5ff; color: #9f7aea; }
+
+        .skills-container {
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>OSINT <span>Platform</span></h1>
+                <span class="workspace-badge"> TALENT WORKSPACE</span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-th-large"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        Talent Pool
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-search"></i>
+                        Búsqueda Avanzada
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-envelope"></i>
+                        Contactos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        Analytics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-file-alt"></i>
+                        Reportes
+                    </a>
+                </li>
+                <li class="nav-item" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e2e8f0;">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-briefcase"></i>
+                        Shadow Assets
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        Configuración
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <h2>Bienvenido de vuelta, Ramiro</h2>
+                    <p>Aquí está el resumen de tu investigación de talento</p>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Buscar perfiles, skills, empresas...">
+                    </div>
+                    <button class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Nuevo Proyecto
+                    </button>
+                    <div class="user-avatar">RA</div>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Perfiles Enriquecidos</span>
+                        <div class="metric-icon blue">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                    </div>
+                    <div class="metric-value">1,247</div>
+                    <div class="metric-change">
+                        <i class="fas fa-arrow-up"></i> 12.5% vs mes anterior
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Contactos Extraídos</span>
+                        <div class="metric-icon green">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                    <div class="metric-value">892</div>
+                    <div class="metric-change">
+                        <i class="fas fa-arrow-up"></i> 8.2% vs mes anterior
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Tasa de Respuesta</span>
+                        <div class="metric-icon purple">
+                            <i class="fas fa-reply"></i>
+                        </div>
+                    </div>
+                    <div class="metric-value">34.8%</div>
+                    <div class="metric-change negative">
+                        <i class="fas fa-arrow-down"></i> 2.1% vs mes anterior
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-label">Proyectos Activos</span>
+                        <div class="metric-icon orange">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                    </div>
+                    <div class="metric-value">7</div>
+                    <div class="metric-change">
+                        <i class="fas fa-arrow-up"></i> 3 nuevos esta semana
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Grid -->
+            <div class="content-grid">
+                <!-- Talent Profiles -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">Perfiles Destacados</h3>
+                        <button class="btn-secondary">Ver Todos</button>
+                    </div>
+                    
+                    <div class="profile-list">
+                        <div class="profile-card">
+                            <div class="profile-avatar">MC</div>
+                            <div class="profile-info">
+                                <div class="profile-name">María González</div>
+                                <div class="profile-role">Senior Full Stack Developer</div>
+                                <div class="profile-meta">
+                                    <span><i class="fas fa-building"></i> TechCorp</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> Buenos Aires</span>
+                                    <span><i class="fas fa-linkedin"></i> LinkedIn</span>
+                                </div>
+                                <div class="skills-container">
+                                    <span class="tag tag-blue">Python</span>
+                                    <span class="tag tag-blue">React</span>
+                                    <span class="tag tag-green">AWS</span>
+                                    <span class="tag tag-purple">Machine Learning</span>
+                                </div>
+                            </div>
+                            <div class="profile-score">
+                                <div class="score-value">94%</div>
+                                <div class="score-label">Match</div>
+                            </div>
+                            <div class="profile-actions">
+                                <button class="btn-icon" title="Ver Perfil">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Contactar">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                                <button class="btn-icon" title="Agregar a Proyecto">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">CF</div>
+                            <div class="profile-info">
+                                <div class="profile-name">Carlos Fernández</div>
+                                <div class="profile-role">DevOps Engineer</div>
+                                <div class="profile-meta">
+                                    <span><i class="fas fa-building"></i> CloudSystems</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> Madrid</span>
+                                    <span><i class="fas fa-github"></i> GitHub</span>
+                                </div>
+                                <div class="skills-container">
+                                    <span class="tag tag-blue">Docker</span>
+                                    <span class="tag tag-blue">Kubernetes</span>
+                                    <span class="tag tag-green">Terraform</span>
+                                    <span class="tag tag-purple">CI/CD</span>
+                                </div>
+                            </div>
+                            <div class="profile-score">
+                                <div class="score-value">89%</div>
+                                <div class="score-label">Match</div>
+                            </div>
+                            <div class="profile-actions">
+                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon"><i class="fas fa-envelope"></i></button>
+                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <div class="profile-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">AR</div>
+                            <div class="profile-info">
+                                <div class="profile-name">Ana Rodríguez</div>
+                                <div class="profile-role">Data Scientist</div>
+                                <div class="profile-meta">
+                                    <span><i class="fas fa-building"></i> DataTech</span>
+                                    <span><i class="fas fa-map-marker-alt"></i> CDMX</span>
+                                    <span><i class="fas fa-graduation-cap"></i> PhD</span>
+                                </div>
+                                <div class="skills-container">
+                                    <span class="tag tag-blue">Python</span>
+                                    <span class="tag tag-blue">TensorFlow</span>
+                                    <span class="tag tag-green">NLP</span>
+                                    <span class="tag tag-purple">Big Data</span>
+                                </div>
+                            </div>
+                            <div class="profile-score">
+                                <div class="score-value">92%</div>
+                                <div class="score-label">Match</div>
+                            </div>
+                            <div class="profile-actions">
+                                <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                <button class="btn-icon"><i class="fas fa-envelope"></i></button>
+                                <button class="btn-icon"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">Actividad Reciente</h3>
+                    </div>
+                    
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>15 nuevos perfiles</strong> encontrados para el proyecto "Senior Devs"
+                                </div>
+                                <div class="activity-time">Hace 2 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #f0fff4; color: #48bb78;">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>Email validado</strong> para María González
+                                </div>
+                                <div class="activity-time">Hace 4 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #fffaf0; color: #ed8936;">
+                                <i class="fas fa-file-export"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>Reporte exportado</strong> - Talent_Sourcing_Q4.pdf
+                                </div>
+                                <div class="activity-time">Hace 6 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #faf5ff; color: #9f7aea;">
+                                <i class="fas fa-sync"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>Enriquecimiento completado</strong> - 47 perfiles actualizados
+                                </div>
+                                <div class="activity-time">Hace 8 horas</div>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #fed7d7; color: #f56565;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-text">
+                                    <strong>Alerta:</strong> 3 emails rebotaron en la última campaña
+                                </div>
+                                <div class="activity-time">Hace 12 horas</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e2e8f0;">
+                        <h4 style="font-size: 14px; color: #1a202c; margin-bottom: 12px;">Fuentes Activas</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            <span class="tag tag-blue"><i class="fab fa-linkedin"></i> LinkedIn</span>
+                            <span class="tag tag-blue"><i class="fab fa-github"></i> GitHub</span>
+                            <span class="tag tag-green"><i class="fab fa-twitter"></i> Twitter</span>
+                            <span class="tag tag-purple"><i class="fas fa-globe"></i> Web Scraping</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

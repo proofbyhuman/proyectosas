@@ -1,0 +1,8 @@
+﻿Característica,Talent Workspace,Shadow Assets Workspace
+Paleta de colores,"Blancos, azules claros, grises suaves","Negro, verde terminal, rojo crítico"
+Tipografía,"Inter (moderna, legible)","JetBrains Mono (técnica, código)"
+Densidad de info,"Espaciada, tarjetas grandes","Compacta, máxima información"
+Iconografía,"Amigable (usuarios, emails)","Técnica (bugs, redes, terminal)"
+Métricas,"Perfiles, contactos, tasas","Vulnerabilidades, CVSS, puertos"
+Acciones,"Contactar, exportar a CSV","Escanear, detener, exportar JSON"
+Ambiente,Profesional RRHH,Hacker/Ciberseguridad

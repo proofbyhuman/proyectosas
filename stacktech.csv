@@ -1,0 +1,10 @@
+﻿Capa,Tecnología
+Infraestructura,"Docker Compose, Docker Networks"
+Base de Datos,Microsoft SQL Server 2022
+API Backend,"Python, FastAPI (Puerto 65200)"
+Agente OSINT,"Python 3.11+, Sherlock, Amass, Tesseract OCR"
+Scraping,"Playwright Stealth, curl_cffi (JA3 evasion)"
+OPSEC,"Tor (SOCKS5), stem, rotación de circuitos"
+Cache/Cola,Redis
+Reportes,"Jinja2, WeasyPrint/Playwright (HTML → PDF)"
+Frontend,"HTML5, CSS3 (Vanilla), React (próximamente)"

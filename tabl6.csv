@@ -1,0 +1,5 @@
+﻿Contenedor,Puerto,Estado
+OsintDb,1433,SQL Server
+OsintCmsServerSync,65200,API FastAPI
+OsintAgent,-,Worker Python
+redis,6379,Cache/Cola

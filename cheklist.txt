@@ -1,0 +1,18 @@
+SEGURIDAD
+[ ] .env no está commiteado en Git
+[ ] No hay credenciales hardcodeadas en ningún archivo .py
+[ ] Docker Compose no expone puertos innecesarios
+[ ] La red tor_network es internal: true
+[ ] Los secrets en DB están enmascarados
+
+OPSEC
+[ ] El agente solo tiene acceso a internet vía Tor
+[ ] Kill-switch implementado para caídas de Tor
+[ ] User-Agent rotation activa
+[ ] TLS fingerprinting mitigado (curl_cffi)
+
+DATOS
+[ ] GDPR compliance: mecanismos de eliminación de PII
+[ ] Logs no contienen datos sensibles en texto plano
+[ ] Backups de DB están cifrados
+[ ] Reports generados tienen TTL (expiran después de N días)

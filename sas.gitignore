@@ -1,0 +1,43 @@
+# Variables de entorno (NUNCA commitear secretos)
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+venv/
+.venv/
+env/
+
+# Docker
+docker-compose.override.yml
+
+# Reports generados (no versionar archivos pesados)
+reports/*.pdf
+reports/*.html
+!templates/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Tor
+tor_data/

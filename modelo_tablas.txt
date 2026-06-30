@@ -1,0 +1,63 @@
+
+---
+
+## 🗄️ Modelo de Datos (13 Tablas)
+
+### Core SaaS
+| # | Tabla | Descripción |
+|---|-------|-------------|
+| 1 | `Tenants` | Clientes/Empresas suscritas al SaaS |
+| 2 | `Users` | Usuarios internos con roles (Admin, Analyst, Viewer) |
+| 3 | `Projects` | Proyectos de investigación (Talent o Shadow) |
+
+### Talent Sourcing
+| # | Tabla | Descripción |
+|---|-------|-------------|
+| 4 | `Talent_Profiles` | Personas identificadas con ConfidenceScore |
+| 5 | `Contact_Info` | Emails, teléfonos extraídos y validados |
+| 6 | `Skills_Experience` | Habilidades y años de experiencia |
+| 7 | `Social_Links` | Redes sociales, blogs, foros |
+
+### Shadow Assets
+| # | Tabla | Descripción |
+|---|-------|-------------|
+| 8 | `Target_Domains` | Dominios raíz auditados |
+| 9 | `Subdomains` | Subdominios descubiertos (Amass) |
+| 10 | `Infrastructure_Assets` | Servicios, buckets, puertos abiertos |
+| 11 | `Security_Leaks` | Fugas detectadas por Dorking |
+| 12 | `Credentials_Exposed` | Credenciales específicas (enmascaradas) |
+
+### Reporting
+| # | Tabla | Descripción |
+|---|-------|-------------|
+| 13 | `Reports` | Dossiers HTML/PDF generados |
+
+> 📄 Ver esquema completo en [`db/init_db.sql`](./db/init_db.sql)
+
+---
+
+## 🚀 Inicio Rápido
+
+### Prerrequisitos
+
+- [Docker](https://www.docker.com/) >= 24.0
+- [Docker Compose](https://docs.docker.com/compose/) >= 2.20
+- [Python](https://www.python.org/) >= 3.11 (para desarrollo local)
+- [Git](https://git-scm.com/)
+
+### Instalación
+
+```bash
+# 1. Clonar el repositorio
+git clone https://github.com/tu-usuario/osint-saas-platform.git
+cd osint-saas-platform
+
+# 2. Configurar variables de entorno
+cp .env.example .env
+# Edita .env con tus credenciales
+
+# 3. Levantar toda la infraestructura
+docker-compose up -d --build
+
+# 4. Verificar que los servicios están corriendo
+docker-compose ps

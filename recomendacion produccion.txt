@@ -1,0 +1,22 @@
+Antes de desplegar en producción, asegúrate de:
+Docker
+Cambiar DB_SA_PASSWORD por una contraseña fuerte (≥ 20 caracteres, aleatoria)
+No exponer el puerto 1433 al host (quitar mapping en docker-compose)
+No exponer el puerto 65200 al host
+Usar docker secrets o un vault en lugar de .env plano
+Habilitar Docker Content Trust (DOCKER_CONTENT_TRUST=1)
+Red
+Colocar la plataforma detrás de un reverse proxy (Nginx/Traefik) con TLS 1.3
+Restringir el acceso a la API con autenticación (JWT/OAuth2)
+Implementar rate limiting en la API
+Configurar firewall (solo puertos 80/443 abiertos al exterior)
+Base de Datos
+Deshabilitar la cuenta sa y crear usuarios con permisos mínimos
+Habilitar TDE (Transparent Data Encryption) en SQL Server
+Configurar backups automáticos cifrados
+Auditar queries con SQL Server Audit
+Agente OSINT
+Verificar que Tor está funcionando (curl --socks5 localhost:9050 https://check.torproject.org)
+Monitorear el consumo de ancho de banda para detectar fugas de tráfico fuera de Tor
+Implementar kill-switch: si Tor cae, el agente se detiene inmediatamente
+Rotar circuitos Tor cada N peticiones (configurable)

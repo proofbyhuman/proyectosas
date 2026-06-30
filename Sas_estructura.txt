@@ -1,0 +1,29 @@
+osint-saas-platform/
+├── docker-compose.yml          # Orquestación de contenedores
+├── .env                        # Variables de entorno (NO commitear)
+├── .env.example                # Template de variables
+├── .gitignore                  # Reglas de exclusión
+├── README.md                   # Este archivo
+├── SECURITY.md                 # Política de seguridad y disclosure
+├── PROJECT_STATE.md            # Estado actual del desarrollo
+│
+├── db/
+│   └── init_db.sql             # Script de creación de 13 tablas
+│
+├── sync_server/
+│   ├── Dockerfile
+│   └── app.py                  # API central (FastAPI, puerto 65200)
+│
+├── agent/
+│   ├── Dockerfile
+│   ├── main.py                 # Entry point del agente modular
+│   └── modules/
+│       ├── social.py           # Sherlock / Instaloader / Perfiles
+│       ├── domain.py           # Amass / Subdominios
+│       ├── dorker.py           # Google Dorking / Shadow Assets
+│       └── ocr.py              # Tesseract OCR para capturas web
+│
+├── templates/
+│   └── osint_dossier.html      # Template Jinja2 para reportes
+│
+└── reports/                    # Dossiers generados (HTML/PDF)

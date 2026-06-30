@@ -1,0 +1,38 @@
+
+### Compromisos de Respuesta
+
+| Fase | Tiempo |
+|------|--------|
+| Acuse de recibo | ≤ 48 horas hábiles |
+| Triaje y confirmación | ≤ 5 días hábiles |
+| Fix desarrollado | ≤ 14 días hábiles (Críticas) / ≤ 30 días (Altas) |
+| Publicación del advisory | Después del patch + ventana de actualización |
+
+---
+
+## 🔑 Gestión de Secretos
+
+### Reglas Obligatorias
+
+1. **NUNCA** hardcodear API keys, contraseñas o tokens en el código fuente.
+2. **SIEMPRE** usar variables de entorno (`.env`) o un gestor de secretos (Vault, AWS Secrets Manager).
+3. El archivo `.env` **debe** estar en `.gitignore`.
+4. Si accidentalmente se commitea un secreto:
+   - Revocar el secreto inmediatamente
+   - Rotar la credencial
+   - Limpiar el historial de Git: `git filter-branch` o `BFG Repo-Cleaner`
+   - Auditar logs de acceso del servicio comprometido
+
+### Secrets Detectados Automáticamente
+
+El módulo `dorker.py` busca los siguientes patrones:
+
+```python
+PATTERNS = {
+    "AWS_ACCESS_KEY":       r'AKIA[0-9A-Z]{16}',
+    "AWS_SECRET_KEY":       r'(?i)aws(.{0,20})?(?-i)[\'\"\`](0-9a-zA-Z\/+){40}[\'\"\`]',
+    "DB_CONNECTION_STRING": r'(?i)(mongodb|postgres|mysql|redis)(:\/\/)[^\s\'\"]+',
+    "PRIVATE_KEY":          r'-----BEGIN (RSA |EC |DSA )?PRIVATE KEY-----',
+    "GITHUB_TOKEN":         r'ghp_[a-zA-Z0-9]{36}',
+    "GENERIC_SECRET":       r'(?i)(password|secret|api_key|token)\s*[:=]\s*[\'\"]?[^\s\'\"]{8,}'
+}
